@@ -42,24 +42,24 @@ file_put_contents(__DIR__."/log.txt", __LINE__);
 
 echo 'Curl: ', function_exists('curl_init') ? 'Enabled' : 'Disabled';
 
-//// initialise the curl request
-$request = curl_init('http://localhost:91');
-//
-//// send a file
-//curl_setopt($request, CURLOPT_POST, true);
-//curl_setopt(
-//    $request,
-//    CURLOPT_POSTFIELDS,
-//    array(
-//        'file' => '@' . realpath('example.txt')
-//    ));
-//
-//// output the response
-//curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-//echo curl_exec($request);
-//
-//// close the session
-//curl_close($request);
+
+//Initialise the cURL var
+$ch = curl_init();
+
+//Get the response from cURL
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+//Set the Url
+curl_setopt($ch, CURLOPT_URL, 'http://localhost:91');
+
+//Create a POST array with the file in it
+$postData = array(
+    'testData' => '@/path/to/file.txt',
+);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+
+// Execute the request
+$response = curl_exec($ch);
 
 
 
