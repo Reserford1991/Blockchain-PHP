@@ -1,0 +1,4 @@
+
+<!--If you want tot generate new key:-->
+<!--$key = $token = bin2hex(random_bytes(16));-->
+<!--file_put_contents(__DIR__."/log.txt", print_r($key, true));-->
