@@ -34,44 +34,46 @@ if ($uploadOk == 0) {
     }
 }
 
-// Sending curl request with file and waiting for response
+$privateKey = openssl_pkey_new(array(
+    'private_key_bits' => 2048,      // Size of Key.
+    'private_key_type' => OPENSSL_KEYTYPE_RSA,
+));
+// Save the private key to private.key file. Never share this file with anyone.
+openssl_pkey_export_to_file($privateKey, 'keys/private.key');
 
-file_put_contents(__DIR__."/log.txt", __LINE__);
+$sslError = openssl_error_string();
 
-//phpinfo();
+if($sslError !== '') {
+    print_r($sslError."<br>");
+}
 
-echo 'Curl: ', function_exists('curl_init') ? 'Enabled' : 'Disabled';
+// Generate the public key for the private key
+$a_key = openssl_pkey_get_details($privateKey);
+// Save the public key in public.key file. Send this file to anyone who want to send you the encrypted data.
+file_put_contents('keys/public.key', $a_key['key']);
 
+// Free the private Key.
+openssl_free_key($privateKey);
 
-//Initialise the cURL var
+$nodesArr = [
+    'http://localhost:91',
+    'http://localhost:92',
+    'http://localhost:93'
+];
+
+$path = 'uploads/';
+$files = array_values(array_diff(scandir($path), array('.', '..')));
+
+$target_url = $nodesArr[array_rand($nodesArr)];
+$file_name_with_full_path = realpath('uploads/'.$files[0]);
+
+$args['file'] = new CurlFile('uploads/test.txt', 'text/plain');
+
 $ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$target_url);
+curl_setopt($ch, CURLOPT_POST,1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $args);
+$result = curl_exec ($ch);
+curl_close ($ch);
 
-//Get the response from cURL
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-//Set the Url
-curl_setopt($ch, CURLOPT_URL, 'http://localhost:91');
-
-//Create a POST array with the file in it
-$postData = array(
-    'testData' => '@/path/to/file.txt',
-);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-
-// Execute the request
-$response = curl_exec($ch);
-
-
-
-//$key = file_get_contents(dirname( dirname(__FILE__) ). '/configs/key.txt');
-//
-//
-//$key1 = hash('sha256', $key);
-//$key2 = hash('sha256', $key);
-//
-//echo md5($key1) . '<br>';
-//echo md5($key2) . '<br>';;
-//
-//if(hash_equals($key1, $key2)) {
-//    echo "Key are identical";
-//}
+unlink($file_name_with_full_path);

@@ -3,5 +3,5 @@
     Select file to upload:<br>
     <input type="file" name="fileToUpload" id="fileToUpload">
     <br>
-    <input type="submit" value="Upload Image" name="submit">
+    <input type="submit" value="Upload File" name="submit">
 </form>
