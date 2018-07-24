@@ -5,10 +5,10 @@ $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
 // Check if file already exists
-//if (file_exists($target_file)) {
-//    echo "Sorry, file already exists.<br>";
-//    $uploadOk = 0;
-//}
+if (file_exists($target_file)) {
+    echo "Sorry, file already exists.<br>";
+    $uploadOk = 0;
+}
 
 // Check file size
 if ($_FILES["fileToUpload"]["size"] > 500000) {
@@ -34,24 +34,6 @@ if ($uploadOk == 0) {
     }
 }
 
-$privateKey = openssl_pkey_new(array(
-    'private_key_bits' => 2048,      // Size of Key.
-    'private_key_type' => OPENSSL_KEYTYPE_RSA,
-));
-// Save the private key to private.key file. Never share this file with anyone.
-openssl_pkey_export_to_file($privateKey, 'keys/private.key');
-
-$sslError = openssl_error_string();
-
-if($sslError !== '') {
-    print_r($sslError."<br>");
-}
-
-// Generate the public key for the private key
-$a_key = openssl_pkey_get_details($privateKey);
-// Save the public key in public.key file. Send this file to anyone who want to send you the encrypted data.
-file_put_contents('keys/public.key', $a_key['key']);
-
 // Free the private Key.
 openssl_free_key($privateKey);
 
@@ -63,9 +45,10 @@ $nodesArr = [
 
 $path = 'uploads/';
 $files = array_values(array_diff(scandir($path), array('.', '..')));
+$file_name_with_full_path = realpath('uploads/'.$files[0]);
 
 $target_url = $nodesArr[array_rand($nodesArr)];
-$file_name_with_full_path = realpath('uploads/'.$files[0]);
+
 
 $args['file'] = new CurlFile('uploads/test.txt', 'text/plain');
 
