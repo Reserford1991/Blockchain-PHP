@@ -1,0 +1,6 @@
+Future improvements:
+
+1) Put all repeated code in separate functions and use them
+2) Eliminate uplads folder in frontend node (use $FILE array)
+3) Make decryption for file
+4) use Docker containers

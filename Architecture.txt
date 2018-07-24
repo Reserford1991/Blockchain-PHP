@@ -1,0 +1,22 @@
+backend
+    1) node-1 - first encryption node
+        1.1) keys folder - folder to store openssl keys
+        1.2) uploads folder - folder for uploadeed files
+        1.3) index.php - main script
+        1.4) log.txt - logs file for debugging
+    2) node-2 - second encryption node
+        2.1) keys folder - folder to store openssl keys
+        2.2) uploads folder - folder for uploadeed files
+        2.3) index.php - main script
+        2.4) log.txt - logs file for debugging
+    3) node-3 - third encryption node
+        3.1) keys folder - folder to store openssl keys
+        3.2) uploads folder - folder for uploadeed files
+        3.3) index.php - main script
+        3.4) log.txt - logs file for debugging
+
+fronend
+    1) uploads folder - folder for uploaded files
+    2) index.php - frontend form
+    3) log.txt - logs file for debugging
+    4) upload.php - upload script
