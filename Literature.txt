@@ -1,0 +1,2 @@
+https://www.virendrachandak.com/techtalk/encryption-using-php-openssl/
+http://phpfiddle.org/lite/code/9epi-j5v2
